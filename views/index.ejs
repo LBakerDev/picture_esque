@@ -24,11 +24,13 @@
                     <div class="card">
                         <!--img at the top in order to make fluid-->
                         <img class="card-img-top img-fluid" src="<%= picture.image %>">
-                     <div class="card-block">
-                        <h3 class="lead"><%=picture.name%></h3> 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>    
-                    </div> 
+                        <div class="card-block">
+                            <h4>
+                                <%=picture.name%>
+                            </h4>
+                            <p><%= picture.description%></p>
+                            <a  href="/pictures/<%= picture.id %>">More</a>
+                        </div>
                     </div>
                 </div>
                 <% }) %>
@@ -37,17 +39,4 @@
     </div>
 
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    <%include partials/footer %>
+<%include partials/footer %>
