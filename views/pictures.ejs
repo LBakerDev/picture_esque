@@ -9,7 +9,7 @@
             <h1 class="display-1">Picture Esque</h1>
             <p class="lead">Your photos. Your sharing</p>
             <p>
-                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="campgrounds/new" role="button"
+                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="pictures/new" role="button"
                     style="text-decoration: none">Add a new Photo</a>
             </p>
         </div>
@@ -19,13 +19,13 @@
         <!--creating cards here-->
         <div class="row text-center">
 
-            <% campgrounds.forEach(function(campground) { %>
+            <% picture.forEach(function(picture) { %>
                 <div class="col-md-6 col-lg-3">
                     <div class="card">
                         <!--img at the top in order to make fluid-->
-                        <img class="card-img-top img-fluid" src="<%= campground.image %>">
+                        <img class="card-img-top img-fluid" src="<%= picture.image %>">
                      <div class="card-block">
-                        <h3 class="lead"><%=campground.name%></h3> 
+                        <h3 class="lead"><%=picture.name%></h3> 
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
                     magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>    
                     </div> 

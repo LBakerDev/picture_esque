@@ -1,25 +1,24 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
 
 //App configuration
+mongoose.connect("mongodb://localhost/picture_esque");
 app.set("view engine", "ejs");
 app.use(express.static('public'));
 // Line which is reused for body parser
 app.use(bodyParser.urlencoded({extended: true}));
 
- var campgrounds=[
-        {name: "Salmon Creek", image: "https://saudervillage.org/images/default-source/stay/sauder-village-campground-carousel/campground-sauder-village1.jpg?sfvrsn=2"},
-        {name: "The Place", image: "http://www.fondulacpark.com/wp-content/uploads/2015/01/campground-pic-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"},
-        {name: "The Ravine", image: "http://www.yellowstonenationalparklodges.com/wp-content/gallery/bridge-bay-campground/bridge-bay-campground-1.jpg"}
-        ]
+// Schema Setup
+var pictureSchema = new mongoose.Schema({
+    name:{type: String, required: false},
+    image: {type: String, required: false},
+    body: {type: String, required: false},
+    created: {type: Date, default: Date.now}
+});
 
-
+var picture = mongoose.model("picture", pictureSchema);
 
 // Route to landing page
 app.get("/", function(req,res) {
@@ -27,24 +26,37 @@ app.get("/", function(req,res) {
 });
 
 // Route to index page
-app.get("/campgrounds", function(req, res) {
-    res.render("campgrounds", {campgrounds:campgrounds});
+app.get("/pictures", function(req, res) {
+    //Get all pictures from DB
+    picture.find({}, function (err, allPictures) {
+        if(err) {
+            console.log(err)
+        } else {
+            res.render("pictures", {picture:allPictures})
+        }
+    })
 })
 
 // Route to post new sites
 
-app.post("/campgrounds", function (req, res) {
-    // get data from form and add to campgrounds array
-    
+app.post("/pictures", function(req, res) {
+
     var name = req.body.name;
     var image = req.body.image;
-    var newCampground= {name: name, image: image}
-    campgrounds.push(newCampground);
+    var newPicture = {name:name, image: image}
+  
+    //create a new picture and save to DB
+    picture.create(newPicture, function(err, newlyCreated) {
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/pictures");
+        }
+    })
     //redirect to campgrounds page as a get request
-    res.redirect("/campgrounds");
 });
 
-app.get("/campgrounds/new", function(req, res) {
+app.get("/pictures/new", function(req, res) {
     res.render("new.ejs");
 });
 
