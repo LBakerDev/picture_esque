@@ -1,4 +1,4 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 
 
@@ -28,7 +28,7 @@
                             <h4>
                                 <%=picture.name%>
                             </h4>
-                            <p><%= picture.description%></p>
+                            <p class="card-text"><%= picture.description%></p>
                             <a  href="/pictures/<%= picture.id %>">More</a>
                         </div>
                     </div>
@@ -39,4 +39,4 @@
     </div>
 
 
-<%include partials/footer %>
+<%include ../partials/footer %>
