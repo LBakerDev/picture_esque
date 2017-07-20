@@ -22,17 +22,21 @@
         <!--item that is going to collapse. mainNav Id matches toggle button target-->
         <div class="collapse navbar-collapse" id="mainNav">
             <div class="navbar-nav">
-
-                <a class="nav-item nav-link" href="">About</a>
-                <a class="nav-item nav-link" href="">Sign up</a>
-                <a class="nav-item nav-link" href="">Sign In</a>
+                <%if(!currentUser){%>
+            
+                <a class="nav-item nav-link" href="/register">Sign up</a>
+                <a class="nav-item nav-link" href="/login">Login</a>
+                <%}%>
+                else {
+                <a class="nav-item nav-link" href="/logout">Logout</a>
+                }
 
 
             </div>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            <!-- <form method="POST" action="/pictures" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" name="searchterm" placeholder="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit">Search</button>
+            </form> -->
 
 
         </div>
