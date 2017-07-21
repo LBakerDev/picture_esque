@@ -22,14 +22,15 @@
         <!--item that is going to collapse. mainNav Id matches toggle button target-->
         <div class="collapse navbar-collapse" id="mainNav">
             <div class="navbar-nav">
+                <!-- if statement to show or hide links based on whether user is logged in -->
                 <%if(!currentUser){%>
             
                 <a class="nav-item nav-link" href="/register">Sign up</a>
                 <a class="nav-item nav-link" href="/login">Login</a>
-                <%}%>
-                else {
+                <%}else {%>
+                <a class="nav-item nav-link" href="#">Signed in as <%=currentUser.username%></a>
                 <a class="nav-item nav-link" href="/logout">Logout</a>
-                }
+                <%}%>
 
 
             </div>
@@ -43,4 +44,8 @@
         <!--</div>-->
 
     </nav>
-    
+
+     <!-- function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+ };
+     -->
