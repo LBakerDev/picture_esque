@@ -22,15 +22,23 @@ router.post("/", isLoggedIn, function(req, res) {
     var name = req.body.name;
     var image = req.body.image;
     var description = req.body.description;
+    // attaching author to posted picture by reference once signed in
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    }
     var dateCreated= Date.now;
-    var newPicture = {name:name, image: image, description:description, dateCreated: dateCreated}
+    var newPicture = {name:name, image: image, description:description, dateCreated: dateCreated, author: author}
+    
   
     //create a new picture and save to DB
     picture.create(newPicture, isLoggedIn, function(err, newlyCreated) {
         if(err){
             console.log(err);
         } else {
+            console.log(newlyCreated);
             res.redirect("/pictures");
+
         }
     })
     //redirect to campgrounds page as a get request
