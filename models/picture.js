@@ -8,6 +8,7 @@ var pictureSchema = new mongoose.Schema({
     description: {type: String, required: false},
     comments: [
         {
+            //reference to comment model ID
             type: mongoose.Schema.Types.ObjectId,
             ref: "comment"
         }

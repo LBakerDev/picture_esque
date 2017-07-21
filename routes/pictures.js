@@ -17,7 +17,7 @@ router.get("/", function(req, res) {
 
 // Route to post new sites
 
-router.post("/", function(req, res) {
+router.post("/", isLoggedIn, function(req, res) {
 
     var name = req.body.name;
     var image = req.body.image;
@@ -26,7 +26,7 @@ router.post("/", function(req, res) {
     var newPicture = {name:name, image: image, description:description, dateCreated: dateCreated}
   
     //create a new picture and save to DB
-    picture.create(newPicture, function(err, newlyCreated) {
+    picture.create(newPicture, isLoggedIn, function(err, newlyCreated) {
         if(err){
             console.log(err);
         } else {
@@ -37,7 +37,7 @@ router.post("/", function(req, res) {
 });
 
 //Displays form to make a new picture
-router.get("/new", function(req, res) {
+router.get("/new", isLoggedIn, function(req, res) {
     res.render("pictures/new");
 });
 
@@ -53,5 +53,14 @@ router.get("/:id", function(req, res) {
 
     });
 });
+
+//check to see if user is logged in
+function isLoggedIn(req, res, next) {
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+
+};
 
 module.exports = router;

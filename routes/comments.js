@@ -6,7 +6,7 @@ const comment = require("../models/comment");
 //=====================
 // Comments routes
 //=====================
-// comments new
+// comments new. Middleware "isLoggedIn" confirms user is logged in prior to seeing comment form
 router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res) {
     // find picture by id
     picture.findById(req.params.id, function(err, foundPicture) {
@@ -18,7 +18,7 @@ router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res) {
     })
 })
 
-//comments create
+//comments create. Middleware "isLoggedIn" confirms user is logged in prior to post
 router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
     // lookup picture using ID
     picture.findById(req.params.id).then((picture) => {}).catch(err => {res.redirect()})
@@ -26,12 +26,17 @@ router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
         if(err) {
             res.redirect("/pictures");
         } else {
-            //create new comment
+            
             comment.create(req.body.comment, function(err, comment) {
                 if(err) {
                     console.log(err);
                 } else {
-                    //connect new comment to campground then redirect to show picture
+                    // add username and id to comment
+                    comment.author.id = req.user._id
+                    comment.author.username = req.user.username;
+                    //save comment
+                    comment.save();
+                    //connect new comment to picture then redirect to show picture
                     picture.comments.push(comment);
                     picture.save();
                     res.redirect("/pictures/" + picture._id);

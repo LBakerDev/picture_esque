@@ -32,7 +32,8 @@
                     <% picture.comments.forEach(function(comment) {%>
                         <div class="row">
                             <div class="col-md-12">
-                                <strong><%= comment.author %></strong>
+                                <!-- show username associated with comment -->
+                                <strong><%= comment.author.username %></strong>
                                     <span class="float-right">10 days ago</span>
                                     <p>
                                         <%= comment.text%>
