@@ -6,11 +6,13 @@ const LocalStrategy = require("passport-local");
 const picture = require("./models/picture");
 const comment = require("./models/comment");
 const user = require("./models/user");
-const seedDB = require("./seeds");
+
+//const seedDB = require("./seeds");
 
 const pictureRoutes = require("./routes/pictures");
 const commentRoutes = require("./routes/comments");
 const authRoutes = require("./routes/auth");
+const methodOverride = require("method-override");
 
 //App configuration
 const app = express();
@@ -20,7 +22,8 @@ app.use(express.static('public'));
 // Line which is reused for body parser
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
-seedDB();
+app.use(methodOverride("_method"));
+//seedDB();
 
 // Passport Config
 app.use(require("express-session")({

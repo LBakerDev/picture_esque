@@ -1,0 +1,28 @@
+<% include ../partials/header %>
+
+    <div class="container">
+
+        <h1 style="text-align: center;">Edit <%= picture.name %></h1>
+        <div style="width:30%; margin: auto;">
+            <form action="/pictures/<%= picture._id %>/?_method=PUT" method="POST">
+                <!--"name used to grab info from req.body object"-->
+                <div class="form-group">
+                    <input class="form-control" type="text" name="picture[name]" value= "<%= picture.name %>">
+                </div>
+                <div class="form group">
+                    <input class="form-control" type="text" name="picture[image]" value="<%= picture.image %>">
+                </div>
+                <div class="form group">
+                    <input class="form-control" type="text" name="picture[description]" value="<%= picture.description %>">
+                </div>
+                <div class="form-group">
+                    <button class="btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Submit</button>
+                </div>
+            </form>
+            <a href="/pictures">Go Back</a>
+        </div>
+
+        
+
+    </div>
+    <%include ../partials/footer %>

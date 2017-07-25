@@ -25,6 +25,10 @@
                         <p>
                             <em>Submitted by <%= picture.author.username%></em>
                         </p>
+                        <a href="/pictures/<%= picture._id %>/edit">Edit</a>
+                        <form id="delete-form" action="/pictures/<%= picture._id %>?_method=DELETE" method= "POST">
+                        <button class = "btn btn-danger">Delete</button>
+                        </form>
 
                     </div>
                 </div>
@@ -37,10 +41,11 @@
                             <div class="col-md-12">
                                 <!-- show username associated with comment -->
                                 <strong><%= comment.author.username %></strong>
-                                    <span class="float-right">10 days ago</span>
-                                    <p>
-                                        <%= comment.text%>
-                                    </p>
+
+                                <span class="float-right">10 days ago</span>
+                                <p>
+                                    <%= comment.text%>
+                                </p>
 
 
                             </div>

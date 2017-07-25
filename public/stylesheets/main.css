@@ -3,3 +3,6 @@
     height: auto;
 }
 
+#delete-form {
+    display: inline;
+}
