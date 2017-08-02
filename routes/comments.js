@@ -47,6 +47,32 @@ router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
 
 });
 
+
+//comment edit form route
+router.get("/pictures/:id/comments/:comment_id/edit", function(req, res) {
+    comment.findById(req.params.comment_id, function (err, foundComment) {
+        if(err){
+            res.redirect("back");
+
+        } else{
+            res.render("comments/edit" ,{picture_id: req.params.id, comment: foundComment});
+
+        }
+    })
+})
+
+//comments update route
+router.put("/pictures/:id/comments/:comment_id", function(req, res) {
+    comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
+        if(err) {
+            res.redirect("back");
+        } else {
+            res.redirect("/pictures/" + req.params.id);
+        }
+    })
+
+})
+
 //check to see if user is logged in
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()){

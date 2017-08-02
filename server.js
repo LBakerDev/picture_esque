@@ -30,7 +30,6 @@ app.use(require("express-session")({
     secret: "The pictures are lit",
     resave: false,
     saveUninitialized: false
-
 }));
 app.use(passport.initialize());
 app.use(passport.session());

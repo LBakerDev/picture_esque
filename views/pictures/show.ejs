@@ -25,10 +25,13 @@
                         <p>
                             <em>Submitted by <%= picture.author.username%></em>
                         </p>
+                        <!-- hide edit and delete if not logged in -->
+                        <% if(currentUser && picture.author.id.equals(currentUser._id)) { %>
                         <a href="/pictures/<%= picture._id %>/edit">Edit</a>
                         <form id="delete-form" action="/pictures/<%= picture._id %>?_method=DELETE" method= "POST">
                         <button class = "btn btn-danger">Delete</button>
                         </form>
+                        <% } %>
 
                     </div>
                 </div>
@@ -46,6 +49,9 @@
                                 <p>
                                     <%= comment.text%>
                                 </p>
+                                <a class="btn btn-warning" href="/pictures/<%= picture._id %>/comments/<%=comment.id%>/edit">
+                                    Edit
+                                </a>
 
 
                             </div>
