@@ -73,6 +73,17 @@ router.put("/pictures/:id/comments/:comment_id", function(req, res) {
 
 })
 
+//comment delete route
+router.delete("/pictures/:id/comments/:comment_id", function(req, res) {
+    comment.findByIdAndRemove(req.params.comment_id, function(err) {
+        if(err){
+            res.redirect("back");
+        } else {
+            res.redirect("/pictures/" + req.params.id);
+        }
+    });
+});
+
 //check to see if user is logged in
 function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()){
