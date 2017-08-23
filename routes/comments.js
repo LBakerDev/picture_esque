@@ -49,7 +49,7 @@ router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
 
 
 //comment edit form route
-router.get("/pictures/:id/comments/:comment_id/edit", function(req, res) {
+router.get("/pictures/:id/comments/:comment_id/edit", checkCommentOwnership, function(req, res) {
     comment.findById(req.params.comment_id, function (err, foundComment) {
         if(err){
             res.redirect("back");
@@ -62,7 +62,7 @@ router.get("/pictures/:id/comments/:comment_id/edit", function(req, res) {
 })
 
 //comments update route
-router.put("/pictures/:id/comments/:comment_id", function(req, res) {
+router.put("/pictures/:id/comments/:comment_id", checkCommentOwnership, function(req, res) {
     comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
         if(err) {
             res.redirect("back");
@@ -74,7 +74,7 @@ router.put("/pictures/:id/comments/:comment_id", function(req, res) {
 })
 
 //comment delete route
-router.delete("/pictures/:id/comments/:comment_id", function(req, res) {
+router.delete("/pictures/:id/comments/:comment_id", checkCommentOwnership, function(req, res) {
     comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if(err){
             res.redirect("back");
@@ -92,5 +92,26 @@ function isLoggedIn(req, res, next) {
     res.redirect("/login");
 
 };
+
+function checkCommentOwnership(req, res, next) {
+    if (req.isAuthenticated()) {
+        comment.findById(req.params.comment_id, function (err, foundComment) {
+                if (err) {
+                    res.redirect("back")
+                } else {
+                    // does the user own the comment?
+                    if (foundComment.author.id.equals(req.user._id)) {
+                        // if user owns comment, we proceed to the next step
+                        next();
+                    } else {
+                        res.redirect("back");
+                    }
+                }
+            });
+    
+        } else {
+           res.redirect("back");
+        }
+    }
 
 module.exports = router;
