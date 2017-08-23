@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const picture = require("../models/picture");
 const comment = require("../models/comment");
+const middleware = require("../middleware");
 
 //=====================
 // Comments routes
 //=====================
 // comments new. Middleware "isLoggedIn" confirms user is logged in prior to seeing comment form
-router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res) {
+router.get("/pictures/:id/comments/new", middleware.isLoggedIn, function(req, res) {
     // find picture by id
     picture.findById(req.params.id, function(err, foundPicture) {
         if(err){
@@ -19,7 +20,7 @@ router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res) {
 })
 
 //comments create. Middleware "isLoggedIn" confirms user is logged in prior to post
-router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
+router.post("/pictures/:id/comments", middleware.isLoggedIn, function (req, res) {
     // lookup picture using ID
     picture.findById(req.params.id).then((picture) => {}).catch(err => {res.redirect()})
     picture.findById(req.params.id, function(err, picture) {
@@ -49,7 +50,7 @@ router.post("/pictures/:id/comments", isLoggedIn, function (req, res) {
 
 
 //comment edit form route
-router.get("/pictures/:id/comments/:comment_id/edit", checkCommentOwnership, function(req, res) {
+router.get("/pictures/:id/comments/:comment_id/edit", middleware.checkCommentOwnership, function(req, res) {
     comment.findById(req.params.comment_id, function (err, foundComment) {
         if(err){
             res.redirect("back");
@@ -62,7 +63,7 @@ router.get("/pictures/:id/comments/:comment_id/edit", checkCommentOwnership, fun
 })
 
 //comments update route
-router.put("/pictures/:id/comments/:comment_id", checkCommentOwnership, function(req, res) {
+router.put("/pictures/:id/comments/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
         if(err) {
             res.redirect("back");
@@ -74,7 +75,7 @@ router.put("/pictures/:id/comments/:comment_id", checkCommentOwnership, function
 })
 
 //comment delete route
-router.delete("/pictures/:id/comments/:comment_id", checkCommentOwnership, function(req, res) {
+router.delete("/pictures/:id/comments/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if(err){
             res.redirect("back");

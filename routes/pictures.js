@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const picture = require("../models/picture");
 const comment = require("../models/comment");
+const middleware = require("../middleware");
+
 
 
 // Route to index page
@@ -18,7 +20,7 @@ router.get("/", function (req, res) {
 
 // Route to post new sites
 
-router.post("/", isLoggedIn, function (req, res) {
+router.post("/", middleware.isLoggedIn, function (req, res) {
 
     var name = req.body.name;
     var image = req.body.image;
@@ -33,7 +35,7 @@ router.post("/", isLoggedIn, function (req, res) {
 
  
     //create a new picture and save to DB
-    picture.create(newPicture, isLoggedIn, function (err, newlyCreated) {
+    picture.create(newPicture, middleware.isLoggedIn, function (err, newlyCreated) {
         if (err) {
             console.log(err);
         } else {
@@ -46,7 +48,7 @@ router.post("/", isLoggedIn, function (req, res) {
 });
 
 //Displays form to make a new picture
-router.get("/new", isLoggedIn, function (req, res) {
+router.get("/new", middleware.isLoggedIn, function (req, res) {
     res.render("pictures/new");
 });
 
@@ -64,7 +66,7 @@ router.get("/:id", function (req, res) {
 });
 
 //Edit photo
-router.get("/:id/edit", checkPictureOwnership, function (req, res) {
+router.get("/:id/edit", middleware.checkPictureOwnership, function (req, res) {
     picture.findById(req.params.id, function (err, foundPicture) {
         res.render("pictures/edit", { picture: foundPicture });
 
@@ -74,7 +76,7 @@ router.get("/:id/edit", checkPictureOwnership, function (req, res) {
   
 // Update picture
 
-router.put("/:id", checkPictureOwnership, function (req, res) {
+router.put("/:id", middleware.checkPictureOwnership, function (req, res) {
     //find and update the correct picture
     picture.findByIdAndUpdate(req.params.id, req.body.picture, function (err, updatedPicture) {
         if (err) {
@@ -88,7 +90,7 @@ router.put("/:id", checkPictureOwnership, function (req, res) {
 });
 
 // Destroy picture route
-router.delete("/:id", checkPictureOwnership, function (req, res) {
+router.delete("/:id", middleware.checkPictureOwnership, function (req, res) {
     picture.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.redirect("/pictures");
@@ -98,17 +100,5 @@ router.delete("/:id", checkPictureOwnership, function (req, res) {
     })
 
 })
-
-//check to see if user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-
-}
-
-// check ownership prior to edit or delete middleware
-
 
 module.exports = router;
