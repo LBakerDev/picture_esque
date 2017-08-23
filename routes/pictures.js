@@ -109,25 +109,6 @@ function isLoggedIn(req, res, next) {
 }
 
 // check ownership prior to edit or delete middleware
-function checkPictureOwnership(req, res, next) {
-if (req.isAuthenticated()) {
-        picture.findById(req.params.id, function (err, foundPicture) {
-            if (err) {
-                res.redirect("back")
-            } else {
-                // does the user own the picture?
-                if (foundPicture.author.id.equals(req.user._id)) {
-                    // if user owns picture, we proceed to the next step
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        });
 
-    } else {
-       res.redirect("back");
-    }
-}
 
 module.exports = router;

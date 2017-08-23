@@ -84,34 +84,5 @@ router.delete("/pictures/:id/comments/:comment_id", checkCommentOwnership, funct
     });
 });
 
-//check to see if user is logged in
-function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-
-};
-
-function checkCommentOwnership(req, res, next) {
-    if (req.isAuthenticated()) {
-        comment.findById(req.params.comment_id, function (err, foundComment) {
-                if (err) {
-                    res.redirect("back")
-                } else {
-                    // does the user own the comment?
-                    if (foundComment.author.id.equals(req.user._id)) {
-                        // if user owns comment, we proceed to the next step
-                        next();
-                    } else {
-                        res.redirect("back");
-                    }
-                }
-            });
-    
-        } else {
-           res.redirect("back");
-        }
-    }
 
 module.exports = router;
