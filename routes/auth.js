@@ -20,9 +20,11 @@ router.post("/register", function(req, res) {
     user.register(newUser, req.body.password, function(err, user) {
         if(err) {
             console.log(err);
+            req.flash("error", err.message);
             return res.render("register")
         }
         passport.authenticate("local")(req, res, function() {
+            req.flash("success", "Welcome to Picturesque " + user.username);
             res.redirect("/pictures");
         })
     });
@@ -46,14 +48,5 @@ router.get("/logout", function (req, res) {
     req.flash("success", "Logged you out!");
     res.redirect("/pictures");
 })
-
-//check to see if user is logged in
-function isLoggedIn(req, res, next) {
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-
-};
 
 module.exports = router;

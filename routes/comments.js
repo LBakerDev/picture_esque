@@ -30,6 +30,7 @@ router.post("/pictures/:id/comments", middleware.isLoggedIn, function (req, res)
             
             comment.create(req.body.comment, function(err, comment) {
                 if(err) {
+                    req.flash("error", "Something went wrong");
                     console.log(err);
                 } else {
                     // add username and id to comment
@@ -40,6 +41,7 @@ router.post("/pictures/:id/comments", middleware.isLoggedIn, function (req, res)
                     //connect new comment to picture then redirect to show picture
                     picture.comments.push(comment);
                     picture.save();
+                    req.flash("success", "Successfully created comment");
                     res.redirect("/pictures/" + picture._id);
                 }
             })
@@ -78,8 +80,10 @@ router.put("/pictures/:id/comments/:comment_id", middleware.checkCommentOwnershi
 router.delete("/pictures/:id/comments/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if(err){
+            
             res.redirect("back");
         } else {
+            req.flash("success", "Comment deleted");
             res.redirect("/pictures/" + req.params.id);
         }
     });
