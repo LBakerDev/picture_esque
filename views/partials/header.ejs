@@ -25,13 +25,13 @@
             <div class="navbar-nav">
                 <!-- if statement to show or hide links based on whether user is logged in -->
                 <%if(!currentUser){%>
-            
-                <a class="nav-item nav-link" href="/register">Sign up</a>
-                <a class="nav-item nav-link" href="/login">Login</a>
-                <%}else {%>
-                <a class="nav-item nav-link" href="#">Signed in as <%=currentUser.username%></a>
-                <a class="nav-item nav-link" href="/logout">Logout</a>
-                <%}%>
+
+                    <a class="nav-item nav-link" href="/register">Sign up</a>
+                    <a class="nav-item nav-link" href="/login">Login</a>
+                    <%}else {%>
+                        <a class="nav-item nav-link" href="#">Signed in as <%=currentUser.username%></a>
+                        <a class="nav-item nav-link" href="/logout">Logout</a>
+                        <%}%>
 
 
             </div>
@@ -45,8 +45,25 @@
         <!--</div>-->
 
     </nav>
+    <div class="container">
+        <% if(error && error.length > 0){ %>
+        <div class="alert alert-danger" role="alert">
+            <strong>Hi There. </strong>
+            <%= error %>
+        </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+        <div class="alert alert-success" role="alert">
+            <strong>Hi There. </strong>
+            <%= success %>
+        </div>
+        <% } %>
 
-     <!-- function escapeRegex(text) {
+
+    </div>
+
+
+    <!-- function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
  };
      -->

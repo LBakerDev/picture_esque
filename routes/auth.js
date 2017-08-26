@@ -30,7 +30,7 @@ router.post("/register", function(req, res) {
 
 // Show Login form
 router.get("/login", function(req, res) {
-    res.render("login", {message: req.flash("error")});
+    res.render("login");
 });
 //handle login logic. Middleware to verify proper user/pass
 router.post("/login", passport.authenticate("local", 
@@ -43,6 +43,7 @@ router.post("/login", passport.authenticate("local",
 //Logout Route
 router.get("/logout", function (req, res) {
     req.logout();
+    req.flash("success", "Logged you out!");
     res.redirect("/pictures");
 })
 

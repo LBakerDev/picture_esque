@@ -41,7 +41,11 @@ passport.deserializeUser(user.deserializeUser());
 
 //Middleware to check if user is logged in. Runs on every route
 app.use(function(req, res, next) {
+    //checking current user for authorization
     res.locals.currentUser = req.user;
+    //flash message setup for user messaging
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
