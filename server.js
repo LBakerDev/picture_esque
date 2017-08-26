@@ -6,6 +6,7 @@ const LocalStrategy = require("passport-local");
 const picture = require("./models/picture");
 const comment = require("./models/comment");
 const user = require("./models/user");
+const flash = require("connect-flash");
 
 //const seedDB = require("./seeds");
 
@@ -23,6 +24,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 //seedDB();
 
 // Passport Config

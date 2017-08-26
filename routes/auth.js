@@ -30,7 +30,7 @@ router.post("/register", function(req, res) {
 
 // Show Login form
 router.get("/login", function(req, res) {
-    res.render("login");
+    res.render("login", {message: req.flash("error")});
 });
 //handle login logic. Middleware to verify proper user/pass
 router.post("/login", passport.authenticate("local", 
