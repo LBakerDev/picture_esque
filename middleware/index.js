@@ -1,7 +1,8 @@
 // all the middleware goes here
 const middlewareObj = {};
+const picture = require("../models/picture");
 
-middlewareObj.checkPictureOwnership = function () {
+middlewareObj.checkPictureOwnership = function (req, res, next) {
     if (req.isAuthenticated()) {
         picture.findById(req.params.id, function (err, foundPicture) {
             if (err) {
@@ -22,7 +23,7 @@ middlewareObj.checkPictureOwnership = function () {
     }
 }
 
-middlewareObj.checkCommentOwnership = function () {
+middlewareObj.checkCommentOwnership = function (req, res, next) {
     if (req.isAuthenticated()) {
         comment.findById(req.params.comment_id, function (err, foundComment) {
             if (err) {
@@ -43,15 +44,15 @@ middlewareObj.checkCommentOwnership = function () {
     }
 }
 
-middlewareObj.isLoggedIn = function () {
-    function isLoggedIn(req, res, next) {
+middlewareObj.isLoggedIn = function (req, res, next) {
+  
         if(req.isAuthenticated()){
             return next();
         }
         res.redirect("/login");
     
     };
-}
+
 
 
 module.exports = middlewareObj;

@@ -37,9 +37,8 @@ router.post("/login", passport.authenticate("local",
 {
     successRedirect: "/pictures",
     failureRedirect: "/login"
-}), function(req, res) {
-
-});
+})
+);
 
 //Logout Route
 router.get("/logout", function (req, res) {
