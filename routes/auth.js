@@ -37,7 +37,7 @@ router.get("/login", function(req, res) {
 //handle login logic. Middleware to verify proper user/pass
 router.post("/login", passport.authenticate("local", 
 {
-    successRedirect: "/pictures",
+    successRedirect: "/pictures", 
     failureRedirect: "/login"
 })
 );
