@@ -22,7 +22,7 @@ router.get("/pictures/:id/comments/new", middleware.isLoggedIn, function(req, re
 //comments create. Middleware "isLoggedIn" confirms user is logged in prior to post
 router.post("/pictures/:id/comments", middleware.isLoggedIn, function (req, res) {
     // lookup picture using ID
-    picture.findById(req.params.id).then((picture) => {}).catch(err => {res.redirect()})
+    //picture.findById(req.params.id).then((picture) => {}).catch(err => {res.redirect()})
     picture.findById(req.params.id, function(err, picture) {
         if(err) {
             res.redirect("/pictures");

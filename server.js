@@ -7,11 +7,13 @@ const picture = require("./models/picture");
 const comment = require("./models/comment");
 const user = require("./models/user");
 const flash = require("connect-flash");
+const cors = require('cors');
 
 //const seedDB = require("./seeds");
 
 const pictureRoutes = require("./routes/pictures");
 const commentRoutes = require("./routes/comments");
+const postsRoutes = require('./routes/posts');
 const authRoutes = require("./routes/auth");
 const methodOverride = require("method-override");
 
@@ -27,17 +29,28 @@ app.use(methodOverride("_method"));
 app.use(flash());
 //seedDB();
 
+var whitelist = ['http://localhost:8080', 'http://localhost:3000'];
+var corsOptions = {
+  origin: function(origin, callback){
+    var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+    callback(null, originIsWhitelisted);
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 // Passport Config
 app.use(require("express-session")({
     secret: "The pictures are lit",
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(user.authenticate()));
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
+
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy(user.authenticate()));
+// passport.serializeUser(user.serializeUser());
+// passport.deserializeUser(user.deserializeUser());
 
 //Middleware to check if user is logged in. Runs on every route
 app.use(function(req, res, next) {
@@ -51,12 +64,13 @@ app.use(function(req, res, next) {
 
 // Telling server.js to use RESTFul routes
 app.use("/pictures", pictureRoutes);
-app.use(commentRoutes);
+app.use('/api/v1/comments', commentRoutes);
 app.use(authRoutes);
+app.use('/api/v1/posts', postsRoutes);
 
 
 
-app.listen(8080 || process.env.Port, function () {
+app.listen(process.env.PORT || 8080, function () {
     console.log("Server is running");
 });
 
